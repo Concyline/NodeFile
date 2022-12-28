@@ -7,6 +7,11 @@ module.exports = {
     post(obj){
         
         db = this.read()
+
+        obj._id = db.length + 1
+        obj._createdAt = new Date()
+        obj._updatedAt = new Date()
+
         db.push(obj)
 
         return fs.writeFileSync('./content.json', JSON.stringify(db), {encoding:'utf-8'})
@@ -16,8 +21,10 @@ module.exports = {
         db = this.read()
 
         const subArray = db.filter( (value, idx) => {
-            return value.id != obj.id
+            return value._id != obj._id
         })
+
+        obj._updatedAt = new Date()
 
         subArray.push(obj)
 
@@ -29,7 +36,7 @@ module.exports = {
         db = this.read()
 
         const subArray = db.filter( (value, idx) => {
-            return value.id != obj.id
+            return value._id != obj._id
         })
 
         return fs.writeFileSync('./content.json', JSON.stringify(subArray), {encoding:'utf-8'})
