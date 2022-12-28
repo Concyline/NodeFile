@@ -35,6 +35,10 @@ module.exports = {
         return fs.writeFileSync('./content.json', JSON.stringify(subArray), {encoding:'utf-8'})
 
     },
+    deleteAll(){
+        db = []
+        return fs.writeFileSync('./content.json', JSON.stringify(db), {encoding:'utf-8'})
+    },
     find(atrib, value){
 
         db = this.read()

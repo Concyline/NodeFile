@@ -50,6 +50,10 @@ app.delete('/object', (req, res) => {
 
 })
 
+app.delete('/object/deleteall', (req, res) => {
+    res.status(200).send(db.deleteAll())
+})
+
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, console.log(`Rodando na porta ${PORT}`))
