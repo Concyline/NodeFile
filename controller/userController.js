@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const dbhelper = require('../helper/dbhelper');
 const Options = require('../helper/options');
 const jwt = require('jsonwebtoken');
-const moment = require('moment')
+const moment = require('moment');
 
 let options = new Options();
 options.setDatabase('__security');
@@ -11,22 +11,39 @@ options.setDocument('users');
 module.exports.post = (req, res) => {
     let newUser = req.body;
 
-    bcrypt.genSalt(10, (er, salt) => {
-        bcrypt.hash(newUser.password, salt, (erro, hash) => {
-            newUser.password = hash;
-            options.obj = newUser;
+    options.atrib = 'email';
+    options.value = newUser.email;
 
-            dbhelper
-                .post(options)
-                .then(value => {
-                    res.status(200).send(value);
-                })
-                .catch(e => {
-                    res.status(400).send(`Erro: ${e}`);
+    dbhelper
+        .find(options)
+        .then(value => {
+            if (value.length > 0) {
+                return res.status(400).send('Usuário já cadastrado');
+            }
+
+            bcrypt.genSalt(10, (er, salt) => {
+                bcrypt.hash(newUser.password, salt, (erro, hash) => {
+                    newUser.password = hash;
+                    options.obj = newUser;
+
+                    dbhelper
+                        .post(options)
+                        .then(value => {
+                            res.status(200).send(value);
+                        })
+                        .catch(e => {
+                            res.status(400).send(`Erro: ${e}`);
+                        });
                 });
+            });
+        })
+        .catch(e => {
+            res.status(400).send(`Erro: ${e}`);
         });
-    });
-    
+
+    /*
+   
+    */
 };
 
 module.exports.login = (req, res) => {
