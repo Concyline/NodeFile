@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { resolve } = require('path');
 
 var db = [];
 
@@ -162,6 +163,93 @@ const deleteAll = options => {
     });
 };
 
+const findAllData = () => {
+
+    return new Promise( (resolve, reject) => {
+
+        try{
+
+            let dir = './databases/'
+
+            if(!fs.existsSync(dir)){
+                reject('Databases not found')
+            }
+
+            fs.readdir(dir, (err, files) => {
+
+                if (err){
+                    reject(err)
+                }
+                  
+                resolve(files)
+              })
+
+        }catch(e){
+            reject(e)
+        }
+
+    })
+}
+
+const findAllDatabases = options => {
+
+    return new Promise( (resolve, reject) => {
+
+        try{
+
+            let dir = './databases/'.concat(options.user)
+
+            if(!fs.existsSync(dir)){
+                reject('Databases not found')
+            }
+
+            fs.readdir(dir, (err, files) => {
+
+                if (err){
+                    reject(err)
+                }
+                  
+                resolve(files)
+              })
+
+        }catch(e){
+            reject(e)
+        }
+
+    })
+}
+
+const findAllDocuments = options => {
+
+    return new Promise( (resolve, reject) => {
+
+        try{
+
+            let dir = './databases/'.concat(options.user).concat(options.database)
+
+            console.log(dir)
+
+            if(!fs.existsSync(dir)){
+                reject('Document not found')
+            }
+
+            fs.readdir(dir, (err, files) => {
+
+                if (err){
+                    reject(err)
+                }
+                  
+                resolve(files)
+              })
+
+        }catch(e){
+            reject(e)
+        }
+
+    })
+
+}
+
 async function saveStorage(options, obj) {
     const dir = './databases/'.concat(options.user).concat(options.database);
 
@@ -178,4 +266,4 @@ async function saveStorage(options, obj) {
     });
 }
 
-module.exports = { read, post, put, delet, find, deleteAll };
+module.exports = { read, post, put, delet, find, deleteAll, findAllDatabases, findAllDocuments, findAllData };

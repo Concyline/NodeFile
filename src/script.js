@@ -60,8 +60,6 @@ function newUser() {
             password.value = '';
         })
         .catch(error => {
-            console.log('error a', error)
-
             alertUser('Usuário já cadastrado')
         });
 }

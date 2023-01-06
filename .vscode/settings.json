@@ -3,6 +3,7 @@
         "atrib",
         "delet",
         "deleteall",
+        "findalldatabases",
         "jwtcheck"
     ]
 }

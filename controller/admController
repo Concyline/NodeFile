@@ -1,0 +1,48 @@
+const db = require('../helper/dbhelper')
+const Options = require('../helper/options')
+
+let options
+
+
+module.exports.data = (req, res) => {
+
+    db.findAllData()
+        .then(value => {
+            res.status(200).send(value);
+        })
+        .catch(e => {
+            res.status(400).send(`Erro: ${e}`);
+        });
+
+}
+
+module.exports.databases = (req, res) => {
+
+    options = new Options();
+    options.setUser(req.user._id)
+
+    db.findAllDatabases(options)
+        .then(value => {
+            res.status(200).send(value);
+        })
+        .catch(e => {
+            res.status(400).send(`Erro: ${e}`);
+        });
+
+}
+
+module.exports.documents = (req, res) => {
+
+    options = new Options();
+    options.setUser(req.user._id)
+    options.setDatabase(req.params.database)
+
+    db.findAllDocuments(options)
+        .then(value => {
+            res.status(200).send(value);
+        })
+        .catch(e => {
+            res.status(400).send(`Erro: ${e}`);
+        });
+
+}
